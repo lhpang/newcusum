@@ -13,6 +13,30 @@ Another problem of the current CUSUM package is that it only includes tabular on
 ## Models:
 <table>
     <tr>
+        <th>Model</th>
+        <th>Description</th>
+        <th>Example</th>
+    </tr>
+    <tr>
+        <td>mortality CUSUM</td>
+        <td>
+        CUSUM monitor in mortality setting <a href="#references">[1]</a>.
+        </td>
+        <td><a href="https://um-kevinhe.github.io/surtvep/articles/surtvep.html#model-fitting">tutorial</a></td>
+    </tr>
+      <tr>
+        <td>binary CUSUM</td>
+        <td>
+        CUSUM monitor in binary setting <a href="#references">[2]</a>.
+        </td>
+        <td><a href="https://um-kevinhe.github.io/surtvep/articles/surtvep.html#model-fitting">tutorial</a></td>
+    </tr>
+</table>
+
+## Methods:
+
+<table>
+    <tr>
         <th>Method</th>
         <th>Description</th>
         <th>Example</th>
@@ -20,14 +44,14 @@ Another problem of the current CUSUM package is that it only includes tabular on
     <tr>
         <td>O-E CUSUM</td>
         <td>
-        drawing O-E CUSUM plots for center effect monitor <a href="#references">[1]</a>.
+        drawing O-E CUSUM plots for center performance monitor <a href="#references">[1]</a>.
         </td>
         <td><a href="https://um-kevinhe.github.io/surtvep/articles/surtvep.html#model-fitting">tutorial</a></td>
     </tr>
       <tr>
         <td>tabular one-sided CUSUM</td>
         <td>
-        drawing one-sided CUSUM plots for center effect monitor <a href="#references">[2]</a>.
+        drawing one-sided CUSUM plots for center performance monitor <a href="#references">[2]</a>.
         </td>
         <td><a href="https://um-kevinhe.github.io/surtvep/articles/surtvep.html#model-fitting">tutorial</a></td>
     </tr>
