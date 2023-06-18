@@ -6,7 +6,7 @@
 # Introduction
 In order to continuously monitor a medical center's performance, a real-time monitor that we term O-E CUSUM, for CUmulative SUMmation of risk-adjusted Observed-Expected (O-E) number of events, is developed based on the sequential probability ratio test (SPRT). The O-E CUSUM plots show the facilities' risk adjusted O-E with monitoring bands over time, and a center's performance and the two-way flagging results can be read from this simple plot. Simultaneous use of two one-sided CUSUMs can also achieve the same goal but with awkward interpretation. 
 
-Current versions of mortality CUSUM don't have user-friendly feedbacks. As a result, users may not be clear about the processing progress and the effect of specific arguments. We improve this by providing detailed feedback message of each step of CUSUM plot built-up. And we provide detailed information regarding with the restart option and risk-adjust option. A simple interpretation is also provided.
+Current versions of mortality CUSUM don't have user-friendly interpretations. As a result, users may not be clear about the interpretation of the plot and what kind of plot to choose for their goals. We improve this by providing detailed interpretations of different types of CUSUM. And we provide detailed information regarding with the restart option and risk-adjust option to help them customize the plot.
 
 Another problem of the current CUSUM package is that it only includes tabular one-sided CUSUM or O-E CUSUM. Users may suffer from switching between different packages. As a result, the pattern of the plots are not consistent and may cause confusion when further presented. To fix this problem, we include both of them in the package. Users can choose between them based on their needs.
 
@@ -92,7 +92,7 @@ Another problem of the current CUSUM package is that it only includes tabular on
 
 Here, we are using the Simulation study included in our packages as an example
 
-    library(mortality.CUSUM)
+    library(newcusum)
 
     #Load Simulation study
     data = sim_data
@@ -119,17 +119,17 @@ The SUPPORT dataset is available in the "mortality.CUSUM" package. The following
     </tr>
     <tr>
         <td>in control</td>
-        <td>10,000</td>
+        <td>2000</td>
         <td>
-        A simulated data set simulating an in control case (low risk).
+        A simulated data set simulating an in control case (year mortality rate 0.1).
         </td>
         <!-- <td><a href="https://github.com/havakv/pycox/blob/master/pycox/simulations/relative_risk.py">simulN2kOP2Continuous</a> -->
     </tr>
     <tr>
         <td>out of control</td>
-        <td>10,000</td>
+        <td>2000</td>
         <td>
-        A simulated data set simulating an out of control case (high risk).
+        A simulated data set simulating an out of control case (year mortality rate 0.3).
         </td>
         <!-- <td><a href="https://github.com/havakv/pycox/tree/master/pycox/simulations/discrete_logit_hazard.py">simulN2kOP2Binary</a> -->
     </tr>
@@ -155,20 +155,14 @@ The SUPPORT dataset is available in the "mortality.CUSUM" package. The following
     </tr>
 </table>
 
-## Simulated Datasets
-## Real Datasets
+
 ## Installation
 
 You can install the development version of mypackage from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("lhpang/mortality-CUSUM")
-```
-
-``` r
-library(mortality-CUSUM)
-## basic example code
+devtools::install_github("lhpang/newcusum")
 ```
 # Detailed tutorial
 # Getting Help
