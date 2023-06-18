@@ -5,7 +5,7 @@
 #cumulative failures from an assumed distribution also without
 #resampling for the expected cumulative failures. Users can choose
 #based on their interest.
-#
+#8.621538 18.981094
 #
 
 source("mortality_O_E_CUSUM_generate.R")
@@ -77,6 +77,7 @@ mortality_O_E_CUSUM_limit_resample=function(nloop,data,gamma1,gamma0,p,tau,N_lis
     h_temp=matrix(NA,nrow=nloop,ncol=length(c1))
 
     for(loop in 1:nloop){
+      set.seed(1)
       setTxtProgressBar(pb, loop)
       E_t=O_t=0
        #error! correctee on June 26 2018 size=round(N3/merge) should be changed to size=N3
@@ -157,14 +158,15 @@ mortality_O_E_CUSUM_limit_distribution=function(nloop,data,gamma1,gamma0,p,tau,s
 
   h_val=NULL
   n_days=ceiling(366*(tau))
-  pb <- txtProgressBar(min = 1, max = nloop, style = 3)
+  #pb <- txtProgressBar(min = 1, max = nloop, style = 3)
   h_temp=matrix(NA,nrow=nloop,ncol=length(c1))
 
 
-
+  #set.seed(1)
   for(loop in 1:nloop){
-    setTxtProgressBar(pb, loop)
+    #setTxtProgressBar(pb, loop)
 
+    set.seed(1)
     pre_time=trunc(rexp(N,(gamma_subject)*exp(mu)))
     delta=((pre_time<=365*yr_int) & ((enrl_t+pre_time)<(tau*365)))
     time=trunc(pmin(pre_time,pmin(365*yr_int,tau*365-enrl_t)))
@@ -193,7 +195,7 @@ mortality_O_E_CUSUM_limit_distribution=function(nloop,data,gamma1,gamma0,p,tau,s
   h_size=apply(h_temp,2,quantile,probs=1-p)
   #print(h_size)
   h_val=rbind(h_val, h_size)
-  close(pb)
+  #close(pb)
   return(sort(h_size))
 }
 
@@ -236,6 +238,7 @@ mortality_O_E_CUSUM_limit =  function(nloop=1000,data=data,gamma1=c(log(1.2),log
 
 ###########################test case
 ##without resampling
+mortality_O_E_CUSUM_limit(nloop=20,data=data,gamma1=c(log(1.2),log(0.8)),gamma0=c(log(1),-log(1)),p=0.05,tau=4,start_yr=0,yr_er=0.1,mu=0,yr_int=1)
 h_val_distribution=NULL
 # for(i in 1:5){
 # h_val_distribution = rbind(h_val_distribution,mortality_O_E_CUSUM_limit(nloop=10,data=data,gamma1=c(log(1.2),log(0.8)),gamma0=c(log(1),-log(1)),p=0.05,tau=4,start_yr=0,yr_er=0.1,mu=0,yr_int=1)
@@ -244,6 +247,6 @@ h_val_distribution=NULL
 #limit=apply(h_val_distribution,2,mean)
 #23.22365 29.11835
 ##with resampling
-O_E_limit_resample = mortality_O_E_CUSUM_limit(nloop=10,data=data,gamma1=c(log(1.2),log(0.8)),gamma0=c(log(1),-log(1)),p=0.05,tau=4,N_list=trunc(quantile(data$total_size)),merge=4)
-h_val_resample=as.vector(apply(O_E_limit_resample,2,mean)[2:3])
+#O_E_limit_resample = mortality_O_E_CUSUM_limit(nloop=10,data=data,gamma1=c(log(1.2),log(0.8)),gamma0=c(log(1),-log(1)),p=0.05,tau=4,N_list=trunc(quantile(data$total_size)),merge=4)
+#h_val_resample=as.vector(apply(O_E_limit_resample,2,mean)[2:3])
 

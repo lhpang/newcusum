@@ -30,8 +30,11 @@ test_plot <- function(x, onesignal = TRUE){
   }
 
   curve_colors <- c("black", "blue", "blue")
+  reference_date <- as.Date("2022-10-01")
+  data_fun$x <- reference_date + data_fun$x
   myplot=ggplot(data_fun,                                   # Draw ggplot2 plot
-                aes(x, values, col = curve)) + geom_line()+scale_color_manual(values = curve_colors)+
+                aes(x, values, col = curve)) + geom_line()+xlab("Date") +  # Set the x-axis label as "Date"
+    scale_x_date(date_labels = "%Y/%m/%d")+scale_color_manual(values = curve_colors)+
    geom_vline(data = data_fun[p_signal, ], aes(xintercept = x), col = "red")
 
   print(myplot)
@@ -39,6 +42,18 @@ test_plot <- function(x, onesignal = TRUE){
 
 }
 
-source("mortality_O_E_CUSUM.R")
-test_plot(res,TRUE)
+#source("mortality_O_E_CUSUM.R")
+test_plot(result,TRUE)
+
+# Create a list of numbers representing days elapsed
+number_list <- c(500, 700, 1000, 1200)
+
+# Define the reference date
+reference_date <- as.Date("2022-10-01")
+
+# Calculate the corresponding dates by adding the numbers to the reference date
+result_dates <- reference_date + number_list
+
+# Print the resulting dates
+print(result_dates)
 

@@ -145,10 +145,10 @@ The SUPPORT dataset is available in the "mortality.CUSUM" package. The following
         <th>Data source</th>
     </tr>
     <tr>
-        <td>SUPPORT</td>
+        <td> SEER Colon Cancer Data</td>
         <td></td>
         <td>
-        The support dataset is a random sample of 1000 patients from Phases I & II of SUPPORT (Study to Understand Prognoses Preferences Outcomes and Risks of Treatment). This dataset is very good for learning how to fit highly nonlinear predictor effects. See 
+        Patients diagnosed at 66 years of age or older between 1994 and 2005 with colon cancer and comorbidity scores for stage III colon cancer who had surgery from the SEER 13 registries (except Alaska) and the state of California. 
         <a href="https://um-kevinhe.github.io/surtvep/articles/surtvep.html#model-fitting">tutorial</a></td> for preprocessing.
         </td>
         <td><a href="https://biostat.app.vumc.org/wiki/Main/SupportDesc">source</a>

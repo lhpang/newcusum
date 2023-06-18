@@ -1,6 +1,6 @@
 source("mortality_O_E_CUSUM_generate.R")
 data=CUSUM_data_gen(mu=0,yr_size=2000,tau=4,yr_er=0.1,yr_int=1,start_yr=0,seed=1,x=NULL,beta=NULL,change_yr=F,change_rate=0)
-
+#6.706183 10.454591
 data=data
 gamma1=c(log(1.2),log(0.8))
 gamma0=c(log(1),-log(1))
@@ -9,8 +9,8 @@ start_yr=0
 yr_er=0.1
 mu=0
 yr_int=1
-
-restart=c(0,0)
+p=0.001
+restart=c(1,1)
 
   ####alert message part
   #nloop=1000,data=data,gamma1=c(log(1.2),log(0.8)),gamma0=c(log(1),-log(1)),p=0.05,tau=4,N_list=NULL,merge=NULL,start_yr=0,yr_er=0.1,mu=0,yr_int=1
@@ -55,70 +55,70 @@ restart=c(0,0)
   ###M1,M2 for "worse" and "better"
   M1_pre=O_E_t-c1[1]*E_t #use for M_t_restart
   M2_pre=-O_E_t+c1[2]*E_t
-
-  M1_pt1=NULL #vectors
-  M1_pt2=NULL
-  M2_pt1=NULL
-  M2_pt2=NULL
-  cross1=0
-  cross1_t=0
-  cross2=0
-  cross2_t=0
-
-  M1_restart=rep(0,n_days)
-  M2_restart=rep(0,n_days)
-  M1_min=M1_pre[1]
-  M2_min=M2_pre[1]
-  start1 = 1
-  start2 = 1
-
-  #####check signal points
-  result <- matrix(0, nrow = n_days, ncol = 6) # storage matrix for alarms
-  cross_1 = NULL
-  cross_2 = NULL
-
-  for(t in 1:ndays){
-    M1_min=min(M1_min,M1_pre[t])
-    M2_min=min(M2_min,M2_pre[t])
-    M1_pt1=M1_min-M1_pre[t]+h[1]          ###xmding: both M1 deduce M1_pre[i,start1[i]]
-    M2_pt1=M2_min-M2_pre[t]+h[2]
-    if(!is.null(restart[1]) && cross1>0) M1_pt2=restart[1]*h[1]-(M1_pre[t]-M1_pre[start1]) #incoporate restart mechanism in the difference
-    ###xmding: why -M1_pre[i,start1[i]]? restart ignore past information
-    if(!is.null(restart[2]) && cross2>0) M2_pt2=restart[2]*h[2]-(M2_pre[t]-M2_pre[start2])
-    M1_restart[t]=min(M1_pt1,M1_pt2,na.rm=T)
-    M2_restart[t]=min(M2_pt1,M2_pt2,na.rm=T)
-    if (M1_restart[t] < 0) {
-      # test for signal
-      result[t, 5] <- 1 # store signal for worse
-      start1=t #remove previous information
-      cross_1 = c(cross_1,t)
-    } else {
-      result[t, 5] <- 0
-    }
-    if (M2_restart[t] < 0) {
-      # test for signal
-      result[t, 6] <- 1 # store signal for better
-      start2=t #remove previous information
-      cross_2 = c(cross_2,t)
-    } else {
-      result[t, 6] <- 0
-    }
-    result[t, 1] <-  t# store patient id
-    result[t, 2] <- O_E_t[t] # store CUSUM value
-    result[t, 3] <- O_E_t[t]+M1_restart[t] # store upper limit
-    result[t, 4] <- O_E_t[t]-M2_restart[t] # store lower limit
-
-  }
-
-  result <- as.data.frame(result)
-  names(result) <- c("t", "O_E", "O_E+M1", "O_E-M2", "signal_worse","signal_better")
+#
+#   M1_pt1=NULL #vectors
+#   M1_pt2=NULL
+#   M2_pt1=NULL
+#   M2_pt2=NULL
+#   cross1=0
+#   cross1_t=0
+#   cross2=0
+#   cross2_t=0
+#
+#   M1_restart=rep(0,n_days)
+#   M2_restart=rep(0,n_days)
+#   M1_min=M1_pre[1]
+#   M2_min=M2_pre[1]
+#   start1 = 1
+#   start2 = 1
+#
+#   #####check signal points
+#   result <- matrix(0, nrow = n_days, ncol = 6) # storage matrix for alarms
+#   cross_1 = NULL
+#   cross_2 = NULL
+#
+#   for(t in 1:n_days){
+#     M1_min=min(M1_min,M1_pre[t])
+#     M2_min=min(M2_min,M2_pre[t])
+#     M1_pt1=M1_min-M1_pre[t]+h[1]          ###xmding: both M1 deduce M1_pre[i,start1[i]]
+#     M2_pt1=M2_min-M2_pre[t]+h[2]
+#     if(!is.null(restart[1]) && cross1>0) M1_pt2=restart[1]*h[1]-(M1_pre[t]-M1_pre[start1]) #incoporate restart mechanism in the difference
+#     ###xmding: why -M1_pre[i,start1[i]]? restart ignore past information
+#     if(!is.null(restart[2]) && cross2>0) M2_pt2=restart[2]*h[2]-(M2_pre[t]-M2_pre[start2])
+#     M1_restart[t]=min(M1_pt1,M1_pt2,na.rm=T)
+#     M2_restart[t]=min(M2_pt1,M2_pt2,na.rm=T)
+#     if (M1_restart[t] < 0) {
+#       # test for signal
+#       result[t, 5] <- 1 # store signal for worse
+#       start1=t #remove previous information
+#       cross_1 = c(cross_1,t)
+#     } else {
+#       result[t, 5] <- 0
+#     }
+#     if (M2_restart[t] < 0) {
+#       # test for signal
+#       result[t, 6] <- 1 # store signal for better
+#       start2=t #remove previous information
+#       cross_2 = c(cross_2,t)
+#     } else {
+#       result[t, 6] <- 0
+#     }
+#     result[t, 1] <-  t# store patient id
+#     result[t, 2] <- O_E_t[t] # store CUSUM value
+#     result[t, 3] <- O_E_t[t]+M1_restart[t] # store upper limit
+#     result[t, 4] <- O_E_t[t]-M2_restart[t] # store lower limit
+#
+#   }
+#
+#   result <- as.data.frame(result)
+#   names(result) <- c("t", "O_E", "O_E+M1", "O_E-M2", "signal_worse","signal_better")
 
   h_temp=NULL
   class(result) <- c("cusum", "data.frame")
   for(k in 1:length(c1)){
     M_t_pre=sign_c1[k]*O_E_t-abs_c1[k]*E_t
     M_t_pre2 = cummin(M_t_pre) #longhao:select the min among all subjects and time
-    h_temp[k]=quantile(M_t_pre-M_t_pre2,probs=0.95)
+    h_temp[k]=quantile(M_t_pre-M_t_pre2,probs=1-p)
   }
   ####creating the plot
 

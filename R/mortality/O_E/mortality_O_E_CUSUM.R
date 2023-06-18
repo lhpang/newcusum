@@ -1,5 +1,7 @@
+setwd("C:/Users/lhpan/OneDrive/Desktop/He project/newcusum/R/mortality/O_E")
 source("mortality_O_E_CUSUM_generate.R")
-data=CUSUM_data_gen(mu=0,yr_size=2000,tau=4,yr_er=0.1,yr_int=1,start_yr=0,seed=1,x=NULL,beta=NULL,change_yr=F,change_rate=0)
+source("mortality_O_E_CUSUM_plot.R")
+data=CUSUM_data_gen(mu=0,yr_size=2000,tau=4,yr_er=0.1,yr_int=1,seed=1,x=NULL,beta=NULL,change_yr=F,change_rate=0)
 
 #' plots the mortality O-E CUSUM for each facility/center strata
 #'
@@ -9,22 +11,33 @@ data=CUSUM_data_gen(mu=0,yr_size=2000,tau=4,yr_er=0.1,yr_int=1,start_yr=0,seed=1
 #' @param gamma1 relative risk under alternative hypothesis, could be any length, as long as consisting with number of theta0
 #' @param gamma0 relative risk under null hypothesis
 #' @param tau number of follow-up years
-#' @param start_yr baseline year (usually year 0)
-#' @param yr_er the control population's yearly mortality rate ER=(total new events in one-year follow-up)/(total patient-years)
-#' @param mu true relative risk
 #' @param yr_int follow-up years of interest
 #' @param h control limit (generated or set according to the user's need)
 #' @param restart the scale for restart
+#' @param onesignal if true, only show the first signal point; if false,
 #' @return the signal points and not signal points
 #' @examples
 #' mortality_O_E_CUSUM(data,startdate,enddate,HPT1,HPT2,year_event_rate,h_val_path,rho)
 #' #Output: graphs
 #' @export
-mortality_O_E_CUSUM<-function(data,gamma1=c(log(1.2),log(0.8)),gamma0=c(log(1),-log(1)),tau=4,start_yr=0,yr_er=0.1,mu=0,yr_int=1,h,restart=c(0,0)){
+mortality_O_E_CUSUM<-function(data,gamma1=c(log(1.2),log(0.8)),gamma0=c(log(1),-log(1)),tau=4,yr_int=1,h,restart=c(1,1),onesignal=TRUE){
 
-  ####alert message part
-#nloop=1000,data=data,gamma1=c(log(1.2),log(0.8)),gamma0=c(log(1),-log(1)),p=0.05,tau=4,N_list=NULL,merge=NULL,start_yr=0,yr_er=0.1,mu=0,yr_int=1
-  ####computing the result
+  #####alert message part
+  library(checkmate)
+
+  assert_numeric(gamma1, finite = TRUE, any.missing = FALSE, len = 2)
+
+  assert_numeric(gamma0, finite = TRUE, any.missing = FALSE, len = 2)
+
+  assert_numeric(tau, lower = 0, finite = TRUE, any.missing = FALSE, len = 1)
+
+  assert_numeric(yr_int, lower = 0, finite = TRUE, any.missing = FALSE, len = 1)
+
+  assert_numeric(h, lower = 0, finite = TRUE, any.missing = FALSE, len = 2)
+
+  assert_numeric(restart, lower = 0, upper = 1, finite = TRUE, any.missing = FALSE, len = 2)
+
+  assert_logical(onesignal, any.missing = FALSE, len = 1)
   #####load the data
   N=length(data$delta_list)
 
@@ -88,7 +101,7 @@ mortality_O_E_CUSUM<-function(data,gamma1=c(log(1.2),log(0.8)),gamma0=c(log(1),-
   cross_1 = NULL
   cross_2 = NULL
 
-  for(t in 1:ndays){
+  for(t in 1:n_days){
     M1_min=min(M1_min,M1_pre[t])
     M2_min=min(M2_min,M2_pre[t])
     M1_pt1=M1_min-M1_pre[t]+h[1]          ###xmding: both M1 deduce M1_pre[i,start1[i]]
@@ -125,12 +138,12 @@ mortality_O_E_CUSUM<-function(data,gamma1=c(log(1.2),log(0.8)),gamma0=c(log(1),-
   names(result) <- c("t", "O_E", "O_E_M1", "O_E_M2", "signal_worse","signal_better")
 
   class(result) <- c("cusum", "data.frame")
-  return(result)
   ####creating the plot
-
+  mortality_O_E_CUSUM_plot(result, onesignal)
   ####interpretation
 
+  return(result)
 }
 
 
-res=mortality_O_E_CUSUM(data,gamma1=c(log(1.2),log(0.8)),gamma0=c(log(1),-log(1)),tau=4,start_yr=0,yr_er=0.1,mu=0,yr_int=1,h=c(6.706183,10.454591),restart=c(0,0))
+result=mortality_O_E_CUSUM(data,gamma1=c(log(1.2),log(0.8)),gamma0=c(log(1),-log(1)),tau=4,yr_int=1,h=c(10,20),restart=c(1,1),onesignal = TRUE)
